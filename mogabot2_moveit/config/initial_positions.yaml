@@ -1,0 +1,7 @@
+initial_positions:
+    base_shoulder_joint: 0
+    shoulder_arm1_joint: 0
+    arm1_elbow_joint: 0
+    elbow_forarm_joint: 0
+    forarm_wrist_joint: 0
+    wrist_hand_joint: 0

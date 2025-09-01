@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot name="mogabot2">
+
+    <group name="arm">
+        <joint name="world_base_joint"/>
+
+        <joint name="base_shoulder_joint"/>
+        <joint name="shoulder_arm1_joint"/>
+        <joint name="arm1_elbow_joint"/>
+        <joint name="elbow_forarm_joint"/>
+        <joint name="forarm_wrist_joint"/>
+        <joint name="wrist_hand_joint"/>
+
+    </group>
+
+    <group_state name="home" group="arm">
+        <joint name="base_shoulder_joint" value="0"/>
+        <joint name="shoulder_arm1_joint" value="0"/>
+        <joint name="arm1_elbow_joint" value="0"/>
+        <joint name="elbow_forarm_joint" value="0"/>
+        <joint name="forarm_wrist_joint" value="0"/>
+        <joint name="wrist_hand_joint" value="0"/>
+    </group_state>
+
+    <disable_collision link1="base_link" link2="shoulder_link" reason="Adjacent"/>
+    <disable_collision link1="shoulder_link" link2="arm1_link" reason="Adjacent"/>
+    <disable_collision link1="arm1_link" link2="elbow_link" reason="Adjacent"/>
+    <disable_collision link1="elbow_link" link2="forarm_link" reason="Adjacent"/>
+    <disable_collision link1="forarm_link" link2="wrist_link" reason="Adjacent"/>
+    <disable_collision link1="wrist_link" link2="hand_link" reason="Adjacent"/>
+
+</robot>
