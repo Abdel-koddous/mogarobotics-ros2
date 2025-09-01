@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<robot name="mogabot2">
+
+    <link name="world"/>
+        
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/1_World_to_base.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/1_World_to_base.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+    </link>
+
+
+    <link name="shoulder_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/2_Base_to_Shoulder.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/2_Base_to_Shoulder.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+    </link>
+
+
+    <link name="arm1_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/3_Shoulder_to_Elbow.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/3_Shoulder_to_Elbow.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+    </link>
+    
+    <link name="elbow_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/4_Elbow_to_Forarm_bis.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 3.14"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/4_Elbow_to_Forarm_bis.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 3.14"/>
+        </collision>
+    </link>
+    
+    <link name="forarm_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/5_Forarm_to_Wrist.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="3.14 3.14 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/5_Forarm_to_Wrist.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="3.14 3.14 0"/>
+        </collision>
+    </link>
+
+    <link name="wrist_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/6_Wrist_to_Hand.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="3.14 3.14 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/6_Wrist_to_Hand.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="3.14 3.14 0"/>
+        </collision>
+    </link>
+    
+    <link name="hand_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/7_Hand_to_Gripper.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 -0.2 0" rpy="3.14 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://mogabot2_description/meshes/7_Hand_to_Gripper.stl" 
+                      scale="0.01 0.01 0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="3.14 0 0"/>
+        </collision>
+    </link>
+<!--
+    <link name="gripper_link"/>
+
+__________________________________________________________________-->
+
+    <joint name="world_base_joint" type="fixed">
+        <parent link="world"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    
+    <joint name="base_shoulder_joint" type="revolute">
+        <parent link="base_link"/>
+        <child link="shoulder_link"/>
+        <origin xyz="0 0 0.81" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-1.57" upper="1.57" effort="30" velocity="10"/>
+    </joint>
+
+    <joint name="shoulder_arm1_joint" type="revolute">
+        <parent link="shoulder_link"/>
+        <child link="arm1_link"/>
+        <origin xyz="0.266 -0.2872 0.8451" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="-3.14" upper="3.14" effort="30" velocity="10"/>
+    </joint>
+
+    <joint name="arm1_elbow_joint" type="revolute">
+        <parent link="arm1_link"/>
+        <child link="elbow_link"/>
+        <origin xyz="0.224 0 2.0" rpy="0 0 3.14"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="-3.14" upper="3.14" effort="30" velocity="10"/>
+    </joint>
+
+    <joint name="elbow_forarm_joint" type="revolute">
+        <parent link="elbow_link"/>
+        <child link="forarm_link"/>
+        <origin xyz="0.42 0.70 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="-3.14" upper="3.14" effort="30" velocity="10"/>
+    </joint>
+
+    <joint name="forarm_wrist_joint" type="revolute">
+        <parent link="forarm_link"/>
+        <child link="wrist_link"/>
+        <origin xyz="0 1.584 0" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="-3.14" upper="3.14" effort="30" velocity="10"/>
+    </joint>
+
+    <joint name="wrist_hand_joint" type="revolute">
+        <parent link="wrist_link"/>
+        <child link="hand_link"/>
+        <origin xyz="0 0.4727 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="-3.14" upper="3.14" effort="30" velocity="10"/>        
+    </joint>
+<!--
+    <joint name="end_effector_gripper_joint" type="fixed">
+        <parent link="end_effector_frame"/>
+        <child link="gripper_link"/>
+        <origin xyz="1.2 0 0" rpy="0 0 0"/>
+    </joint>
+
+-->
+
+</robot>
+
