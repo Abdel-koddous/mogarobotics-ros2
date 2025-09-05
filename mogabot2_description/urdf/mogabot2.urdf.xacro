@@ -12,13 +12,6 @@
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </visual>
-        <collision>
-            <geometry>
-                <mesh filename="package://mogabot2_description/meshes/1_World_to_base_lowpoly.stl" 
-                      scale="0.01 0.01 0.01"/>
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </collision>
     </link>
 
 
@@ -30,13 +23,6 @@
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </visual>
-        <collision>
-            <geometry>
-                <mesh filename="package://mogabot2_description/meshes/2_Base_to_Shoulder_lowpoly.stl" 
-                      scale="0.01 0.01 0.01"/>
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </collision>
     </link>
 
 
@@ -48,13 +34,6 @@
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </visual>
-        <collision>
-            <geometry>
-                <mesh filename="package://mogabot2_description/meshes/3_Shoulder_to_Elbow_lowpoly.stl" 
-                      scale="0.01 0.01 0.01"/>
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </collision>
     </link>
     
     <link name="elbow_link">
@@ -65,13 +44,6 @@
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 3.14"/>
         </visual>
-        <collision>
-            <geometry>
-                <mesh filename="package://mogabot2_description/meshes/4_Elbow_to_Forarm_bis_lowpoly.stl" 
-                      scale="0.01 0.01 0.01"/>
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 3.14"/>
-        </collision>
     </link>
     
     <link name="forarm_link">
@@ -82,13 +54,6 @@
             </geometry>
             <origin xyz="0 0 0" rpy="3.14 3.14 0"/>
         </visual>
-        <collision>
-            <geometry>
-                <mesh filename="package://mogabot2_description/meshes/5_Forarm_to_Wrist_lowpoly.stl" 
-                      scale="0.01 0.01 0.01"/>
-            </geometry>
-            <origin xyz="0 0 0" rpy="3.14 3.14 0"/>
-        </collision>
     </link>
 
     <link name="wrist_link">
@@ -99,13 +64,6 @@
             </geometry>
             <origin xyz="0 0 0" rpy="3.14 3.14 0"/>
         </visual>
-        <collision>
-            <geometry>
-                <mesh filename="package://mogabot2_description/meshes/6_Wrist_to_Hand_lowpoly.stl" 
-                      scale="0.01 0.01 0.01"/>
-            </geometry>
-            <origin xyz="0 0 0" rpy="3.14 3.14 0"/>
-        </collision>
     </link>
     
     <link name="hand_link">
@@ -116,13 +74,6 @@
             </geometry>
             <origin xyz="0 -0.2 0" rpy="3.14 0 0"/>
         </visual>
-        <collision>
-            <geometry>
-                <mesh filename="package://mogabot2_description/meshes/7_Hand_to_Gripper_lowpoly.stl" 
-                      scale="0.01 0.01 0.01"/>
-            </geometry>
-            <origin xyz="0 0 0" rpy="3.14 0 0"/>
-        </collision>
     </link>
 <!--
     <link name="gripper_link"/>
