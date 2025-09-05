@@ -1,5 +1,5 @@
 <launch>
-    <let name="urdf_path" value="$(find-pkg-share mogabot2_description)/urdf/mogabot2.urdf.xacro"/>
+    <let name="urdf_path" value="$(find-pkg-share myfanuc_description)/urdf/myfanuc.urdf.xacro"/>
     <!-- Launch Robot State Publisher -->
     <node pkg="robot_state_publisher" exec="robot_state_publisher">
         <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"/>
@@ -9,7 +9,6 @@
     <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui"/>
 
     <!-- Launch RViz -->
-    <let name="rviz_config_path" value="$(find-pkg-share mogabot2_description)/rviz/mogabot2.rviz"/>
-    <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(var rviz_config_path)"/>
-    
+    <let name="rviz_config_path" value="$(find-pkg-share myfanuc_description)/rviz/myfanuc.rviz"/>
+    <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(var rviz_config_path)"/> 
 </launch>
