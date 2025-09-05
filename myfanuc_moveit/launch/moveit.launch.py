@@ -42,8 +42,8 @@ def generate_launch_description():
     # RViz
     rviz_config = os.path.join(
         get_package_share_directory("myfanuc_moveit"),
-            "config",
-            "moveit.rviz",
+            "launch",
+            "myfanuc_moveit.rviz",
     )
     rviz_node = Node(
         package="rviz2",
@@ -54,6 +54,7 @@ def generate_launch_description():
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
+            moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
             moveit_config.joint_limits,
         ],
