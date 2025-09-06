@@ -127,13 +127,13 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            db_arg,
+            #db_arg,
             rviz_node,
-            static_tf,
+            #static_tf,
             robot_state_publisher,
             run_move_group_node,
             ros2_control_node,
-            mongodb_server_node,
+            #mongodb_server_node,
             joint_state_broadcaster_spawner,
             myfanuc_controller_spawner,
         ]
