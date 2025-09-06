@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 
-<robot name="myfanuc">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="myfanuc">
+
+    <!-- Import fanuc ros2_control description -->
+    <xacro:include filename="myfanuc_ros2_control.xacro" />
+    
+    <xacro:arg name="initial_positions_file" default="/home/moga/ros2/mogarobotics_ws/src/myfanuc_moveit/config/initial_positions.yaml" />
+    <xacro:myfanuc_ros2_control name="MyFanucFakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
 
     <link name="base_link">
         <visual>
