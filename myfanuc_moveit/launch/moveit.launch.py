@@ -1,13 +1,20 @@
 import os
 from launch import LaunchDescription
-from moveit_configs_utils import MoveItConfigsBuilder
-from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
+from launch.conditions import IfCondition, UnlessCondition
+from launch_ros.actions import Node
+from launch.actions import ExecuteProcess
 from ament_index_python.packages import get_package_share_directory
+from moveit_configs_utils import MoveItConfigsBuilder
 
 
 def generate_launch_description():
+
+    # Command-line arguments
+    db_arg = DeclareLaunchArgument(
+        "db", default_value="False", description="Database flag"
+    )
 
     moveit_config = (
         MoveItConfigsBuilder("myfanuc", package_name="myfanuc_moveit")
@@ -22,34 +29,41 @@ def generate_launch_description():
         .to_moveit_configs()
     )
 
-    move_group_node = Node(
+    # Start the actual move_group node/action server
+    run_move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        parameters=[moveit_config.to_dict(), 
-                    {"publish_robot_description_semantic": True}],
-        arguments=["--ros-args", "--log-level", "info"],
+        parameters=[moveit_config.to_dict()],
     )
 
     # RViz
-    rviz_config = os.path.join(
-        get_package_share_directory("myfanuc_moveit"),
-            "launch",
-            "myfanuc_moveit.rviz",
+    rviz_base = os.path.join(
+        get_package_share_directory("myfanuc_moveit"), "launch"
     )
+    rviz_full_config = os.path.join(rviz_base, "myfanuc_moveit.rviz")
+
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
         name="rviz2",
-        output="screen",
-        arguments=["-d", rviz_config],
+        output="log",
+        arguments=["-d", rviz_full_config],
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
-            moveit_config.joint_limits,
         ],
+    )
+
+    # Static TF
+    static_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_transform_publisher",
+        output="log",
+        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
     )
 
     # Publish TF
@@ -61,15 +75,13 @@ def generate_launch_description():
         parameters=[moveit_config.robot_description],
     )
 
-    # Load ROS2 controllers
+    # ros2_control using FakeSystem as hardware
     ros2_controllers_path = os.path.join(
         get_package_share_directory("myfanuc_moveit"),
         "config",
-        "ros2_controllers.yaml"
+        "ros2_controllers.yaml",
     )
-
-
-    ros2_controllers_node = Node(
+    ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[ros2_controllers_path],
@@ -83,8 +95,8 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "joint_state_broadcaster", 
-            "--controller-manager", 
+            "joint_state_broadcaster",
+            "--controller-manager",
             "/controller_manager",
         ],
     )
@@ -94,17 +106,34 @@ def generate_launch_description():
         executable="spawner",
         arguments=[
             "myfanuc_controller",
-            "--controller-manager", 
+            "--controller-manager",
             "/controller_manager",
         ],
     )
 
+    # Warehouse mongodb server
+    db_config = LaunchConfiguration("db")
+    mongodb_server_node = Node(
+        package="warehouse_ros_mongo",
+        executable="mongo_wrapper_ros.py",
+        parameters=[
+            {"warehouse_port": 33829},
+            {"warehouse_host": "localhost"},
+            {"warehouse_plugin": "warehouse_ros_mongo::MongoDatabaseConnection"},
+        ],
+        output="screen",
+        condition=IfCondition(db_config),
+    )
+
     return LaunchDescription(
         [
-            move_group_node, 
+            db_arg,
             rviz_node,
+            static_tf,
             robot_state_publisher,
-            ros2_controllers_node,
+            run_move_group_node,
+            ros2_control_node,
+            mongodb_server_node,
             joint_state_broadcaster_spawner,
             myfanuc_controller_spawner,
         ]
