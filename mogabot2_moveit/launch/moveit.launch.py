@@ -9,13 +9,6 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
 
-    is_sim = LaunchConfiguration("is_sim")
-    
-    is_sim_arg = DeclareLaunchArgument(
-        "is_sim",
-        default_value="True"
-    )
-
     moveit_config = (
         MoveItConfigsBuilder("mogabot2", package_name="mogabot2_moveit")
         .robot_description(file_path=os.path.join(
@@ -34,7 +27,6 @@ def generate_launch_description():
         executable="move_group",
         output="screen",
         parameters=[moveit_config.to_dict(), 
-                    {"use_sim_time": is_sim},
                     {"publish_robot_description_semantic": True}],
         arguments=["--ros-args", "--log-level", "info"],
     )
@@ -60,10 +52,64 @@ def generate_launch_description():
         ],
     )
 
+
+    # Publish TF
+    robot_state_publisher = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        name="robot_state_publisher",
+        output="both",
+        parameters=[moveit_config.robot_description],
+    )
+
+
+
+    # ros2_control using FakeSystem as hardware
+    ros2_controllers_path = os.path.join(
+        get_package_share_directory("mogabot2_moveit"),
+        "config",
+        "ros2_controllers.yaml",
+    )
+    ros2_control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[ros2_controllers_path],
+        remappings=[
+            ("/controller_manager/robot_description", "/robot_description"),
+        ],
+        output="both",
+    )
+
+    
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "joint_state_broadcaster",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+
+    mogabot2_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "mogabot2_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
     return LaunchDescription(
         [
-            is_sim_arg,
-            move_group_node, 
-            rviz_node
+            rviz_node,
+            
+            robot_state_publisher,
+            move_group_node,
+            
+            ros2_control_node,
+
+            joint_state_broadcaster_spawner,
+            mogabot2_controller_spawner,
         ]
     )

@@ -1,0 +1,27 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    mogabot2_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+
+mogabot2_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - base_shoulder_joint
+      - shoulder_arm1_joint
+      - arm1_elbow_joint
+      - elbow_forarm_joint
+      - forarm_wrist_joint
+      - wrist_hand_joint
+    allow_nonzero_velocity_at_trajectory_end: true

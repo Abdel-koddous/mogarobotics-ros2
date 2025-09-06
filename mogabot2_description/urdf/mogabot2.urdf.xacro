@@ -1,9 +1,14 @@
 <?xml version="1.0"?>
-<robot name="mogabot2">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mogabot2">
+
+    <!-- Import mogabot2 ros2_control description -->
+    <xacro:include filename="mogabot2_ros2_control.xacro" />
+
+    <xacro:arg name="initial_positions_file" default="/home/moga/ros2/mogarobotics_ws/src/mogabot2_moveit/config/initial_positions.yaml" />
+    <xacro:mogabot2_ros2_control name="Mogabot2FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
 
     <link name="world"/>
         
-
     <link name="base_link">
         <visual>
             <geometry>
