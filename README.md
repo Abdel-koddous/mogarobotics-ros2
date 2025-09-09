@@ -2,6 +2,7 @@
 
 To build mogabot2 moveit2 package run the following 2 commands:
 ```
+cd mogarobotics-ros2
 clear && colcon build && source install/setup.bash
 ros2 launch mogabot2_moveit moveit.launch.py
 ```
